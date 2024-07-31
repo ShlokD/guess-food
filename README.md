@@ -1,3 +1,3 @@
-# Flighty Mango
+# Guess Food
 
-Preact + Vite + Eslint + Prettier + TailwindCSS
+Guess ingredients for the recipe. Made with Preact
