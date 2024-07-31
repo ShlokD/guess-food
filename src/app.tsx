@@ -1,4 +1,4 @@
-import { useRef, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { CONFIGS, MEAL_URL } from "./consts";
 import { MODES, Recipe, SCREENS } from "./types";
 
@@ -80,9 +80,6 @@ const Play = ({
       setGuess((prev) => {
         const newGuess = prev.slice();
         newGuess[foundIndex] = true;
-        if (newGuess.every((g) => g)) {
-          setEnd(true);
-        }
         return newGuess;
       });
       setValue("");
@@ -96,6 +93,15 @@ const Play = ({
       setValue(value);
     }
   };
+
+  useEffect(() => {
+    if (guess.every((g) => g)) {
+      setEnd(true);
+      setTimeout(() => getNewRecipe(), 3000);
+    }
+  }, [guess]);
+
+  const allcorrect = guess.every((g) => g);
   return (
     <div className="flex flex-col w-full min-h-screen">
       <div className="flex gap-4 my-4 w-full items-center justify-center">
@@ -145,7 +151,9 @@ const Play = ({
                 return (
                   <p
                     key={`ingredient-${i}`}
-                    className="w-1/3 p-4 bg-blue-500 rounded-xl font-bold">
+                    className={`${
+                      allcorrect && end ? "animate-pulse bg-green-500" : ""
+                    } w-1/3 p-4 bg-blue-500 rounded-xl font-bold`}>
                     {ingredient}
                   </p>
                 );
